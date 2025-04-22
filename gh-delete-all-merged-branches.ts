@@ -22,6 +22,7 @@ const [refs, user, ..._] = await Promise.all([
 await Promise.all(
   refs
     .map((x) => x.replace("refs/heads/", ""))
+    .filter((x) => x != "main")
     .map(async (branch) => {
       if (!await checkMerged({ user, branch })) return
       await $`git branch -D ${branch}`.printCommand()
