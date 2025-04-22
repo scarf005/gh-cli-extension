@@ -16,7 +16,6 @@ const checkMerged = ({ user, branch }: { user: string; branch: string }) =>
 const [refs, user, ..._] = await Promise.all([
   getRefs(),
   getUser(),
-  $`git switch main`.printCommand(),
 ])
 
 await Promise.all(
@@ -28,4 +27,3 @@ await Promise.all(
       await $`git branch -D ${branch}`.printCommand()
     }),
 )
-await $`git switch -`.printCommand()
