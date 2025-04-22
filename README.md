@@ -20,7 +20,7 @@ Just add the project path to PATH
 echo "export PATH=\$PATH:$(pwd)" >> ~/.bashrc
 
 # fish
-echo "fish_add_path (pwd)" >> ~/.config/fish/config.fish
+echo "fish_add_path "(pwd) >> ~/.config/fish/config.fish
 ```
 
 ## License
