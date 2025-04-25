@@ -24,3 +24,5 @@ await $`gh repo clone ${repo} -- --filter=blob:none`.printCommand()
 await $`gh repo set-default ${upstream}`
   .cwd(repo)
   .printCommand()
+
+await $`git branch main --set-upstream-to=upstream/main`
