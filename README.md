@@ -5,6 +5,7 @@ Because bash aliases can go for so long
 ## Features
 
 - [Delete all merged branches](./gh-delete-all-merged-branches.ts)
+- [Fork and clone repository with `blob:none`](./gh-clone-fork.ts)
 
 ## Dependencies
 
