@@ -4,7 +4,7 @@ Because bash aliases can go for so long
 
 ## Features
 
-- [Delete all merged branches](./git-delete-all-merged-branches.ts)
+- [Delete all merged branches](./gh-delete-all-merged-branches.ts)
 
 ## Dependencies
 
