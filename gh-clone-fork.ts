@@ -26,3 +26,5 @@ await $`gh repo set-default ${upstream}`
   .printCommand()
 
 await $`git branch main --set-upstream-to=upstream/main`
+  .cwd(repo)
+  .printCommand()
