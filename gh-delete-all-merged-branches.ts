@@ -67,12 +67,12 @@ const getMerged = (
   ).then((x) => x.search.edges.flatMap((y) => y.node))
 
 const [refs, origin, upstream, auth, ..._] = await Promise
-    .all([
-      getRefs(),
-      getRemote({ remote: "origin" }),
-      getRemote({ remote: "upstream" }),
-      $`gh auth token`.text().catch(() => undefined),
-    ])
+  .all([
+    getRefs(),
+    getRemote({ remote: "origin" }),
+    getRemote({ remote: "upstream" }),
+    $`gh auth token`.text().catch(() => undefined),
+  ])
 
 const branches = refs
   .map((x) => x.replace("refs/heads/", ""))
@@ -94,7 +94,7 @@ if (merged.length === 0) {
 
 console.table(merged, ["title", "url", "headRefName"])
 
-const doDelete = await $.confirm("Delete following merged branches?")
+const doDelete = await $.confirm(`Delete ${merged.length} merged branches?`)
 if (!doDelete) Deno.exit(0)
 
-await deleteBranches(merged.map((x) => x.headRefName))
+await Promise.allSettled(merged.map((x) => deleteBranches([x.headRefName])))

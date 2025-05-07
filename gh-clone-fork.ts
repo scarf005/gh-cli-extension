@@ -21,10 +21,15 @@ await $`gh repo fork --clone=false ${upstream}`.printCommand()
 
 await $`gh repo clone ${repo} -- --filter=blob:none`.printCommand()
 
+const defaultBranch =
+  await $`gh repo view ${upstream} --json defaultBranchRef --jq '.defaultBranchRef.name'`
+    .printCommand()
+    .text()
+
 await $`gh repo set-default ${upstream}`
   .cwd(repo)
   .printCommand()
 
-await $`git branch main --set-upstream-to=upstream/main`
+await $`git branch ${defaultBranch} --set-upstream-to=upstream/${defaultBranch}`
   .cwd(repo)
   .printCommand()
