@@ -93,7 +93,6 @@ if (merged.length === 0) {
 }
 
 console.table(merged, ["title", "url", "headRefName"])
-await Deno.writeTextFile("merged.json", JSON.stringify(merged, null, 2))
 
 const doDelete = await $.confirm("Delete following merged branches?")
 if (!doDelete) Deno.exit(0)
