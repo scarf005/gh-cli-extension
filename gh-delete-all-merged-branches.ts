@@ -8,13 +8,17 @@ const getRefs = () =>
 const deleteBranches = (branches: string[]) =>
   $`git branch -D ${branches}`.printCommand()
 
-const getRemote = ({ remote }: { remote: string }) =>
-  $`git remote get-url ${remote}`.text().then((url) => {
-    const groups = /github\.com[:\/](?<owner>.*)\/(?<repo>.*)\.git/
-      .exec(url)?.groups
-    if (!groups) throw new Error("Not a GitHub repository")
-    return groups as { owner: string; repo: string }
-  })
+interface Remote {
+  owner: string
+  repo: string
+}
+const remoteRegex = /github\.com[:\/](?<owner>.*)\/(?<repo>.*)\.git/
+const getRemote = (
+  { remote }: { remote: string },
+): Promise<Remote | undefined> =>
+  $`git config --get remote.${remote}.url`.text()
+    .then((url) => remoteRegex.exec(url)?.groups as Remote | undefined)
+    .catch(() => undefined)
 
 const getMerged = (
   { octokit, owner, repo, branches }: {
@@ -62,8 +66,7 @@ const getMerged = (
     },
   ).then((x) => x.search.edges.flatMap((y) => y.node))
 
-const [refs, { owner: origin, repo }, { owner: upstream }, auth, ..._] =
-  await Promise
+const [refs, origin, upstream, auth, ..._] = await Promise
     .all([
       getRefs(),
       getRemote({ remote: "origin" }),
@@ -79,8 +82,8 @@ const octokit = new Octokit({ auth })
 
 const merged = await getMerged({
   octokit,
-  owner: upstream ?? origin,
-  repo: repo,
+  owner: upstream?.owner ?? origin!.owner,
+  repo: upstream?.repo ?? origin!.repo,
   branches,
 })
 
