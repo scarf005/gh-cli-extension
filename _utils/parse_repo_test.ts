@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert"
-import { parseRepo } from "./_util.ts"
+import { parseRepo } from "../_utils/parse_repo.ts"
 
 const expected = { owner: "owner", repo: "repo" }
 Deno.test("parseRepo() parses GitHub repos", () => {

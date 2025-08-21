@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run -RWE --allow-run
 import $ from "@david/dax"
 import { Command } from "@cliffy/command"
-import { parseRepo } from "./_util.ts"
+import { getDefaultBranch, parseRepo } from "./_utils/mod.ts"
 
 const { args: [input] } = await new Command()
   .description("Fork with best defaults")
@@ -21,10 +21,7 @@ await $`gh repo fork --clone=false ${upstream}`.printCommand()
 
 await $`gh repo clone ${repo} -- --filter=blob:none`.printCommand()
 
-const defaultBranch =
-  await $`gh repo view ${upstream} --json defaultBranchRef --jq '.defaultBranchRef.name'`
-    .printCommand()
-    .text()
+const defaultBranch = await getDefaultBranch(upstream)
 
 await $`gh repo set-default ${upstream}`
   .cwd(repo)
