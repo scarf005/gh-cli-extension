@@ -32,9 +32,9 @@ const getMerged = (
     search: {
       edges: Array<{
         node: {
+          headRefName: string
           title: string
           url: string
-          headRefName: string
         }
       }>
     }
